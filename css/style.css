@@ -135,9 +135,19 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.035em; line-height: 1.06; }
   position: relative;
 }
 .phone-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-/* document preview (e.g. a PDF invoice) — show the whole page on white */
-.phone-screen.doc { background: #fff; display: flex; align-items: center; }
-.phone-screen.doc img { object-fit: contain; object-position: center; padding: 10px; }
+/* paper document (e.g. a PDF invoice) — a floating sheet, not a phone frame */
+.paper {
+  width: 330px; max-width: 100%;
+  background: #fff;
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  overflow: hidden;
+  transform: rotate(-2.5deg);
+  box-shadow: 0 40px 80px -28px rgba(0,0,0,0.32), 0 10px 28px -14px rgba(0,0,0,0.22);
+  transition: transform 0.4s var(--ease);
+}
+.paper:hover { transform: rotate(0deg) translateY(-4px); }
+.paper img { width: 100%; display: block; }
 /* placeholder when no screenshot yet */
 .phone-screen .ph {
   position: absolute; inset: 0;
