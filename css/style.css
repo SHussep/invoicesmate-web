@@ -282,6 +282,33 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.035em; line-height: 1.06; }
 .faq-item p { color: var(--ink-2); margin-bottom: 0; }
 .contact-box { background: var(--paper-2); border-radius: 20px; padding: 36px; text-align: center; margin-top: 44px; }
 .contact-box h2 { margin-top: 0; }
+
+/* "not an accountant" notice callout */
+.notice {
+  background: #eef4ff;
+  border: 1px solid #d3e2ff;
+  border-left: 4px solid var(--brand);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin: 4px 0 30px;
+}
+.notice h3 { font-size: 1.05rem; font-weight: 600; margin: 0 0 6px; color: var(--ink); }
+.notice p { color: var(--ink-2); margin: 0; font-size: 0.96rem; }
+
+/* short disclaimer under the Australia band (on dark) */
+.aus-note { margin: 38px auto 0; max-width: 58ch; font-size: 0.9rem; color: #8b93a5; }
+
+/* fine-print disclaimer row in the footer */
+.footer-note {
+  margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid var(--hair);
+  font-size: 0.78rem; color: var(--ink-3); line-height: 1.55;
+}
+
+/* legal/support page footer bottom row */
+.footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; }
+.footer-bottom a { color: var(--ink-2); }
+.footer-bottom a:hover { color: var(--ink); }
 .btn-primary {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--brand); color: #fff;
