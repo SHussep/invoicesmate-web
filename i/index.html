@@ -42,6 +42,7 @@
   .b-due     { background:#e9f0fe; color:var(--accent); }
   .b-overdue { background:#fbeae9; color:var(--red); }
   .b-partial { background:#fdf2e4; color:var(--orange); }
+  .b-cancelled { background:#eee; color:#888; }
   .grid { display:flex; gap:24px; flex-wrap:wrap; margin:22px 0 6px; }
   .grid > div { flex:1 1 220px; }
   .lbl { font-size:11px; letter-spacing:.12em; color:var(--muted); margin-bottom:4px;
@@ -141,7 +142,11 @@
   function render(inv) {
     var status = String(inv.status || 'sent');
     var paid = status === 'paid';
+    // A cancelled invoice is VOID — never invite payment (no balance-due line,
+    // no bank details); it must not read as "DUE" like an open invoice.
+    var cancelled = status === 'cancelled';
     var badge = paid ? ['b-paid', 'PAID']
+        : cancelled ? ['b-cancelled', 'CANCELLED']
         : status === 'overdue' ? ['b-overdue', 'OVERDUE']
         : status === 'partiallyPaid' ? ['b-partial', 'PARTIALLY PAID']
         : ['b-due', 'DUE ' + esc(date(inv.dueDate).toUpperCase())];
@@ -156,7 +161,7 @@
         '</td><td class="r">' + money(it.lineGross) + '</td></tr>';
     }).join('');
 
-    var bank = (inv.companyBankName || inv.companyBSB || inv.companyAccountNumber)
+    var bank = (!cancelled && (inv.companyBankName || inv.companyBSB || inv.companyAccountNumber))
       ? '<div class="box"><div class="lbl">Payment details</div>' +
         (inv.companyBankName ? esc(inv.companyBankName) + '<br>' : '') +
         (inv.companyBSB ? 'BSB: ' + esc(inv.companyBSB) + '<br>' : '') +
@@ -194,7 +199,7 @@
           (showGst ? '<div><span>GST</span><span>' + money(inv.gst) + '</span></div>' : '') +
           '<div class="big"><span>Total</span><span>' + money(inv.total) + '</span></div>' +
           (Number(inv.amountPaid) > 0 ? '<div class="paid"><span>Paid</span><span>−' + money(inv.amountPaid) + '</span></div>' : '') +
-          (!paid && Number(inv.balanceDue) > 0 ? '<div class="due"><span>Balance due</span><span>' + money(inv.balanceDue) + '</span></div>' : '') +
+          (!paid && !cancelled && Number(inv.balanceDue) > 0 ? '<div class="due"><span>Balance due</span><span>' + money(inv.balanceDue) + '</span></div>' : '') +
         '</div>' +
         bank +
         (inv.notes ? '<div class="box"><div class="lbl">Notes</div>' + esc(inv.notes) + '</div>' : '') +
