@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--
+  Invoice Mate — public "live invoice" page.
+
+  Deploy: copy this folder as `/i/` in the invoicesmate-web repo (GitHub
+  Pages), so it serves at https://syainvoices.com/i/ . The app shares links of
+  the form  https://syainvoices.com/i/#<token> ; the token is the id of a doc
+  in the public `shared_invoices` Firestore collection (readable by anyone who
+  has the token — see firestore.rules in the app repo).
+
+  No build step, no SDK: it talks to Firestore's public REST API with the web
+  API key. Reading is allowed by security rules only via direct doc `get`;
+  the only write the page performs (and rules permit) is the view-tracking
+  PATCH on viewedAt / lastViewedAt / viewCount.
+
+  XSS note: the invoice is rendered into HTML, so EVERY dynamic value is
+  passed through esc() (HTML entity escaping) before interpolation — numbers
+  additionally go through money()/date() which only emit formatted output.
+  When editing this file, never interpolate a raw field into markup.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Invoice · Invoice Mate</title>
+<style>
+  :root { --ink:#1c2430; --muted:#6b7684; --line:#e7eaee; --accent:#2f6fed;
+          --green:#12876f; --red:#c2413b; --orange:#c07621; --bg:#f4f6f9; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:15px/1.45 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width:760px; margin:0 auto; padding:24px 16px 60px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px;
+          padding:28px; box-shadow:0 8px 28px rgba(16,24,40,.06); }
+  .top { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  h1 { font-size:15px; letter-spacing:.14em; margin:0 0 2px; color:var(--muted); }
+  .num { font-size:24px; font-weight:700; margin:0; }
+  .badge { align-self:flex-start; padding:6px 14px; border-radius:999px;
+           font-size:13px; font-weight:700; letter-spacing:.04em; }
+  .b-paid    { background:#e5f5f0; color:var(--green); }
+  .b-due     { background:#e9f0fe; color:var(--accent); }
+  .b-overdue { background:#fbeae9; color:var(--red); }
+  .b-partial { background:#fdf2e4; color:var(--orange); }
+  .grid { display:flex; gap:24px; flex-wrap:wrap; margin:22px 0 6px; }
+  .grid > div { flex:1 1 220px; }
+  .lbl { font-size:11px; letter-spacing:.12em; color:var(--muted); margin-bottom:4px;
+         text-transform:uppercase; }
+  .who { white-space:pre-line; }
+  table { width:100%; border-collapse:collapse; margin-top:18px; }
+  th { text-align:left; font-size:11px; letter-spacing:.1em; color:var(--muted);
+       text-transform:uppercase; padding:8px 6px; border-bottom:2px solid var(--line); }
+  th.r, td.r { text-align:right; white-space:nowrap; }
+  td { padding:10px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+  td .note { color:var(--muted); font-size:13px; margin-top:2px; }
+  .totals { margin-left:auto; margin-top:14px; max-width:300px; }
+  .totals div { display:flex; justify-content:space-between; padding:4px 6px; }
+  .totals .big { font-size:18px; font-weight:700; border-top:2px solid var(--ink);
+                 margin-top:6px; padding-top:10px; }
+  .totals .due { color:var(--red); font-weight:700; }
+  .totals .paid { color:var(--green); }
+  .box { background:var(--bg); border-radius:10px; padding:14px 16px; margin-top:18px; }
+  .box .lbl { margin-bottom:6px; }
+  .foot { text-align:center; color:var(--muted); font-size:12px; margin-top:22px; }
+  .btn { display:inline-block; margin-top:18px; padding:12px 22px; border:0;
+         border-radius:10px; background:var(--accent); color:#fff; font-weight:600;
+         font-size:15px; cursor:pointer; }
+  #state { text-align:center; padding:80px 20px; color:var(--muted); }
+  @media print {
+    body { background:#fff; }
+    .card { border:0; box-shadow:none; padding:0; }
+    .btn, .foot, #printbar { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="state">Loading invoice…</div>
+  <div id="doc" style="display:none"></div>
+  <div class="foot">Powered by <strong>Invoice Mate</strong></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  // Firebase web app config (public by design — access is controlled by
+  // Firestore security rules, not by hiding these values).
+  var PROJECT = 'invoicesmate';
+  var API_KEY = 'AIzaSyDusryDUXWS3v_KUy-O39hOfPSofQdtsv8';
+
+  var token = (location.hash || '').replace(/^#\/?/, '').trim();
+  var stateEl = document.getElementById('state');
+  var docEl = document.getElementById('doc');
+
+  if (!token || !/^[A-Za-z0-9]{16,64}$/.test(token)) {
+    stateEl.textContent = 'This invoice link is not valid.';
+    return;
+  }
+
+  var docUrl = 'https://firestore.googleapis.com/v1/projects/' + PROJECT +
+      '/databases/(default)/documents/shared_invoices/' +
+      encodeURIComponent(token) + '?key=' + API_KEY;
+
+  // ── Firestore REST value decoding ──────────────────────────────────────
+  function dec(v) {
+    if (v == null) return null;
+    if ('stringValue' in v) return v.stringValue;
+    if ('integerValue' in v) return parseInt(v.integerValue, 10);
+    if ('doubleValue' in v) return v.doubleValue;
+    if ('booleanValue' in v) return v.booleanValue;
+    if ('timestampValue' in v) return v.timestampValue;
+    if ('nullValue' in v) return null;
+    if ('mapValue' in v) return decFields((v.mapValue || {}).fields || {});
+    if ('arrayValue' in v) return ((v.arrayValue || {}).values || []).map(dec);
+    return null;
+  }
+  function decFields(fields) {
+    var out = {};
+    for (var k in fields) out[k] = dec(fields[k]);
+    return out;
+  }
+
+  function money(n) {
+    n = Number(n) || 0;
+    return '$' + n.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function date(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    return isNaN(d) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  // HTML-entity escaping — EVERY dynamic value below goes through this (or
+  // through money()/date(), which only emit formatted numeric output).
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  // ── Render ─────────────────────────────────────────────────────────────
+  function render(inv) {
+    var status = String(inv.status || 'sent');
+    var paid = status === 'paid';
+    var badge = paid ? ['b-paid', 'PAID']
+        : status === 'overdue' ? ['b-overdue', 'OVERDUE']
+        : status === 'partiallyPaid' ? ['b-partial', 'PARTIALLY PAID']
+        : ['b-due', 'DUE ' + esc(date(inv.dueDate).toUpperCase())];
+
+    var showGst = Number(inv.gst) > 0;
+    var rows = (inv.items || []).map(function (it) {
+      return '<tr><td>' + esc(it.description) +
+        (it.lineNotes ? '<div class="note">' + esc(it.lineNotes) + '</div>' : '') +
+        '</td><td class="r">' + esc(it.quantity) +
+        '</td><td class="r">' + money(it.unitPrice) +
+        (showGst ? '</td><td class="r">' + (it.gstApplicable ? money(it.gst) : '—') : '') +
+        '</td><td class="r">' + money(it.lineGross) + '</td></tr>';
+    }).join('');
+
+    var bank = (inv.companyBankName || inv.companyBSB || inv.companyAccountNumber)
+      ? '<div class="box"><div class="lbl">Payment details</div>' +
+        (inv.companyBankName ? esc(inv.companyBankName) + '<br>' : '') +
+        (inv.companyBSB ? 'BSB: ' + esc(inv.companyBSB) + '<br>' : '') +
+        (inv.companyAccountNumber ? 'Account: ' + esc(inv.companyAccountNumber) : '') +
+        '</div>' : '';
+
+    // All interpolated values are escaped (see esc above) — safe to inject.
+    var html =
+      '<div class="card">' +
+        '<div class="top"><div>' +
+          '<h1>TAX INVOICE</h1><p class="num">' + esc(inv.number) + '</p>' +
+        '</div><span class="badge ' + badge[0] + '">' + badge[1] + '</span></div>' +
+        '<div class="grid">' +
+          '<div><div class="lbl">From</div><div class="who">' +
+            '<strong>' + esc(inv.companyName) + '</strong>' +
+            (inv.companyABN ? '\nABN ' + esc(inv.companyABN) : '') +
+            (inv.companyAddress ? '\n' + esc(inv.companyAddress) : '') +
+            (inv.companyEmail ? '\n' + esc(inv.companyEmail) : '') +
+            (inv.companyPhone ? '\n' + esc(inv.companyPhone) : '') + '</div></div>' +
+          '<div><div class="lbl">Billed to</div><div class="who">' +
+            '<strong>' + esc(inv.customerName || '') + '</strong>' +
+            (inv.customerABN ? '\nABN ' + esc(inv.customerABN) : '') +
+            (inv.customerAddress ? '\n' + esc(inv.customerAddress) : '') + '</div></div>' +
+          '<div><div class="lbl">Dates</div>' +
+            'Issued: ' + esc(date(inv.issueDate)) + '<br>Due: ' + esc(date(inv.dueDate)) + '</div>' +
+        '</div>' +
+        (inv.serviceTitle ? '<div class="box"><strong>' + esc(inv.serviceTitle) + '</strong>' +
+          (inv.serviceSubtitle ? '<div class="note">' + esc(inv.serviceSubtitle) + '</div>' : '') + '</div>' : '') +
+        '<table><thead><tr><th>Description</th><th class="r">Qty</th><th class="r">Unit price</th>' +
+          (showGst ? '<th class="r">GST</th>' : '') + '<th class="r">Amount</th></tr></thead>' +
+          '<tbody>' + rows + '</tbody></table>' +
+        '<div class="totals">' +
+          '<div><span>Subtotal</span><span>' + money(inv.grossSubtotal) + '</span></div>' +
+          (Number(inv.totalDiscount) > 0 ? '<div><span>Discount</span><span>−' + money(inv.totalDiscount) + '</span></div>' : '') +
+          (showGst ? '<div><span>GST</span><span>' + money(inv.gst) + '</span></div>' : '') +
+          '<div class="big"><span>Total</span><span>' + money(inv.total) + '</span></div>' +
+          (Number(inv.amountPaid) > 0 ? '<div class="paid"><span>Paid</span><span>−' + money(inv.amountPaid) + '</span></div>' : '') +
+          (!paid && Number(inv.balanceDue) > 0 ? '<div class="due"><span>Balance due</span><span>' + money(inv.balanceDue) + '</span></div>' : '') +
+        '</div>' +
+        bank +
+        (inv.notes ? '<div class="box"><div class="lbl">Notes</div>' + esc(inv.notes) + '</div>' : '') +
+        (inv.terms ? '<div class="box"><div class="lbl">Terms &amp; conditions</div>' + esc(inv.terms) + '</div>' : '') +
+        '<div id="printbar" style="text-align:center">' +
+          '<button class="btn" onclick="window.print()">Download / Print PDF</button></div>' +
+      '</div>';
+
+    docEl.insertAdjacentHTML('afterbegin', html);
+    stateEl.style.display = 'none';
+    docEl.style.display = 'block';
+    document.title = esc(inv.number) + ' · ' + esc(inv.companyName || 'Invoice');
+  }
+
+  // ── View tracking (the only write the page makes; rules restrict it to
+  //    exactly these three fields) ─────────────────────────────────────────
+  function recordView(raw) {
+    try {
+      var fields = raw.fields || {};
+      var count = fields.viewCount ? parseInt(dec(fields.viewCount), 10) || 0 : 0;
+      var firstView = fields.viewedAt && dec(fields.viewedAt);
+      var now = new Date().toISOString();
+      var body = { fields: {
+        lastViewedAt: { timestampValue: now },
+        viewCount: { integerValue: String(count + 1) }
+      } };
+      var mask = 'updateMask.fieldPaths=lastViewedAt&updateMask.fieldPaths=viewCount';
+      if (!firstView) {
+        body.fields.viewedAt = { timestampValue: now };
+        mask += '&updateMask.fieldPaths=viewedAt';
+      }
+      fetch('https://firestore.googleapis.com/v1/projects/' + PROJECT +
+            '/databases/(default)/documents/shared_invoices/' +
+            encodeURIComponent(token) + '?' + mask + '&key=' + API_KEY, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }).catch(function () {});
+    } catch (e) { /* tracking must never break the page */ }
+  }
+
+  // ── Load ───────────────────────────────────────────────────────────────
+  fetch(docUrl).then(function (r) {
+    if (r.status === 404 || r.status === 403) throw new Error('gone');
+    if (!r.ok) throw new Error('http');
+    return r.json();
+  }).then(function (raw) {
+    var data = decFields(raw.fields || {});
+    if (data.revokedAt || !data.invoice) throw new Error('gone');
+    render(data.invoice);
+    recordView(raw);
+  }).catch(function (e) {
+    stateEl.textContent = (e && e.message === 'gone')
+      ? 'This invoice is no longer available. Please contact the sender.'
+      : 'Could not load the invoice. Check your connection and try again.';
+  });
+})();
+</script>
+</body>
+</html>
