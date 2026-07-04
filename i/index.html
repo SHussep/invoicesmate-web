@@ -161,12 +161,15 @@
         '</td><td class="r">' + money(it.lineGross) + '</td></tr>';
     }).join('');
 
-    var bank = (!cancelled && (inv.companyBankName || inv.companyBSB || inv.companyAccountNumber))
+    var payLines = [];
+    if (inv.companyBankName) payLines.push(esc(inv.companyBankName));
+    if (inv.companyBSB) payLines.push('BSB: ' + esc(inv.companyBSB));
+    if (inv.companyAccountNumber) payLines.push('Account: ' + esc(inv.companyAccountNumber));
+    if (inv.companyPayId) payLines.push('PayID: ' + esc(inv.companyPayId));
+    var bank = (!cancelled && payLines.length)
       ? '<div class="box"><div class="lbl">Payment details</div>' +
-        (inv.companyBankName ? esc(inv.companyBankName) + '<br>' : '') +
-        (inv.companyBSB ? 'BSB: ' + esc(inv.companyBSB) + '<br>' : '') +
-        (inv.companyAccountNumber ? 'Account: ' + esc(inv.companyAccountNumber) : '') +
-        '</div>' : '';
+        payLines.join('<br>') + '</div>'
+      : '';
 
     // All interpolated values are escaped (see esc above) — safe to inject.
     var html =
