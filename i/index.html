@@ -169,8 +169,10 @@
       return d.length === 6 ? d.slice(0, 3) + '-' + d.slice(3) : String(raw).trim();
     }
     function fmtAccount(raw) {
+      // No universal AU account length — group any plausible number, only
+      // reject pasted garbage past the sanity ceiling.
       var d = String(raw).replace(/\D/g, '');
-      if (d.length < 5 || d.length > 10) return String(raw).trim();
+      if (!d.length || d.length > 14) return String(raw).trim();
       return d.replace(/(.{4})/g, '$1 ').trim();
     }
     var payLines = [];
