@@ -161,10 +161,22 @@
         '</td><td class="r">' + money(it.lineGross) + '</td></tr>';
     }).join('');
 
+    // AU display formats — JS twin of the app's bank_format.dart: BSB always
+    // XXX-XXX, account numbers grouped in fours; non-standard input passes
+    // through untouched rather than being mangled.
+    function fmtBsb(raw) {
+      var d = String(raw).replace(/\D/g, '');
+      return d.length === 6 ? d.slice(0, 3) + '-' + d.slice(3) : String(raw).trim();
+    }
+    function fmtAccount(raw) {
+      var d = String(raw).replace(/\D/g, '');
+      if (d.length < 5 || d.length > 10) return String(raw).trim();
+      return d.replace(/(.{4})/g, '$1 ').trim();
+    }
     var payLines = [];
     if (inv.companyBankName) payLines.push(esc(inv.companyBankName));
-    if (inv.companyBSB) payLines.push('BSB: ' + esc(inv.companyBSB));
-    if (inv.companyAccountNumber) payLines.push('Account: ' + esc(inv.companyAccountNumber));
+    if (inv.companyBSB) payLines.push('BSB: ' + esc(fmtBsb(inv.companyBSB)));
+    if (inv.companyAccountNumber) payLines.push('Account: ' + esc(fmtAccount(inv.companyAccountNumber)));
     if (inv.companyPayId) payLines.push('PayID: ' + esc(inv.companyPayId));
     var bank = (!cancelled && payLines.length)
       ? '<div class="box"><div class="lbl">Payment details</div>' +
