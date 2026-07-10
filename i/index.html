@@ -152,6 +152,21 @@
         : ['b-due', 'DUE ' + esc(date(inv.dueDate).toUpperCase())];
 
     var showGst = Number(inv.gst) > 0;
+
+    // Deposit labelling — mirrors the app's PDF rules (pdf_template.dart
+    // depositRows). Old snapshots lack these keys: Number(undefined) is NaN,
+    // so every guard below simply stays false and the page renders as before.
+    var depAmt = Number(inv.depositAmount);
+    var depPct = Number(inv.depositPercent) > 0
+        ? ' (' + Number(inv.depositPercent) + '%)' : '';
+    // Unpaid deposit on an open invoice → ask for it, like the PDF's
+    // "Deposit due". Paid/cancelled documents never ask for money.
+    var depositDue = depAmt > 0 && !inv.depositPaid && !paid && !cancelled;
+    // The recorded payment IS the deposit → label it as such; if the user
+    // recorded a different figure, the generic "Paid" stays (that real
+    // amount wins, same as the PDF's "Less amount paid").
+    var paidIsDeposit = depAmt > 0 && !!inv.depositPaid &&
+        Math.abs(Number(inv.amountPaid) - depAmt) < 0.005;
     var rows = (inv.items || []).map(function (it) {
       return '<tr><td>' + esc(it.description) +
         (it.lineNotes ? '<div class="note">' + esc(it.lineNotes) + '</div>' : '') +
@@ -215,7 +230,8 @@
           (Number(inv.totalDiscount) > 0 ? '<div><span>Discount</span><span>−' + money(inv.totalDiscount) + '</span></div>' : '') +
           (showGst ? '<div><span>GST</span><span>' + money(inv.gst) + '</span></div>' : '') +
           '<div class="big"><span>Total</span><span>' + money(inv.total) + '</span></div>' +
-          (Number(inv.amountPaid) > 0 ? '<div class="paid"><span>Paid</span><span>−' + money(inv.amountPaid) + '</span></div>' : '') +
+          (depositDue ? '<div><span>Deposit due' + depPct + '</span><span>' + money(depAmt) + '</span></div>' : '') +
+          (Number(inv.amountPaid) > 0 ? '<div class="paid"><span>' + (paidIsDeposit ? 'Deposit paid' + depPct : 'Paid') + '</span><span>−' + money(inv.amountPaid) + '</span></div>' : '') +
           (!paid && !cancelled && Number(inv.balanceDue) > 0 ? '<div class="due"><span>Balance due</span><span>' + money(inv.balanceDue) + '</span></div>' : '') +
         '</div>' +
         bank +
