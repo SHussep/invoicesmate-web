@@ -23,7 +23,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Invoice · Invoice Mate</title>
+<title>Invoice Mate</title>
 <style>
   :root { --ink:#1c2430; --muted:#6b7684; --line:#e7eaee; --accent:#2f6fed;
           --green:#12876f; --red:#c2413b; --orange:#c07621; --bg:#f4f6f9; }
@@ -67,6 +67,21 @@
          border-radius:10px; background:var(--accent); color:#fff; font-weight:600;
          font-size:15px; cursor:pointer; }
   #state { text-align:center; padding:80px 20px; color:var(--muted); }
+  /* Quote acceptance — the one thing a client can DO from this page. */
+  .accept { margin-top:20px; border:1px solid var(--line); border-radius:12px;
+            padding:18px 16px; background:#fbfdff; }
+  .accept h2 { margin:0 0 4px; font-size:16px; }
+  .accept p { margin:0 0 14px; color:var(--muted); font-size:13px; line-height:1.45; }
+  .accept input { width:100%; max-width:320px; padding:11px 12px; font-size:15px;
+                  border:1px solid var(--line); border-radius:9px; margin-bottom:12px;
+                  font-family:inherit; }
+  .accept .btn { margin-top:0; }
+  .accepted { margin-top:20px; border-radius:12px; padding:16px;
+              background:#e5f5f0; color:var(--green); font-weight:600; }
+  .accepted span { display:block; font-weight:400; color:var(--ink);
+                   font-size:13px; margin-top:4px; }
+  .err { color:var(--red); font-size:13px; margin-top:10px; }
+  @media print { .accept { display:none; } }
   @media print {
     body { background:#fff; }
     .card { border:0; box-shadow:none; padding:0; }
@@ -76,7 +91,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div id="state">Loading invoice…</div>
+  <div id="state">Loading…</div>
   <div id="doc" style="display:none"></div>
   <div class="foot">Powered by <strong>Invoice Mate</strong></div>
 </div>
@@ -139,13 +154,21 @@
   }
 
   // ── Render ─────────────────────────────────────────────────────────────
-  function render(inv) {
+  // One renderer for both documents: an invoice asks to be PAID, a quote asks
+  // to be ACCEPTED. Everything they share (parties, lines, totals) is
+  // identical, so only the differences are named here.
+  function render(inv, isQuote) {
     var status = String(inv.status || 'sent');
     var paid = status === 'paid';
     // A cancelled invoice is VOID — never invite payment (no balance-due line,
     // no bank details); it must not read as "DUE" like an open invoice.
     var cancelled = status === 'cancelled';
-    var badge = paid ? ['b-paid', 'PAID']
+    var badge = isQuote
+        ? (status === 'accepted' ? ['b-paid', 'ACCEPTED']
+          : status === 'rejected' ? ['b-cancelled', 'DECLINED']
+          : status === 'expired' ? ['b-overdue', 'EXPIRED']
+          : ['b-due', 'VALID UNTIL ' + esc(date(inv.validUntil).toUpperCase())])
+        : paid ? ['b-paid', 'PAID']
         : cancelled ? ['b-cancelled', 'CANCELLED']
         : status === 'overdue' ? ['b-overdue', 'OVERDUE']
         : status === 'partiallyPaid' ? ['b-partial', 'PARTIALLY PAID']
@@ -170,7 +193,7 @@
     var rows = (inv.items || []).map(function (it) {
       return '<tr><td>' + esc(it.description) +
         (it.lineNotes ? '<div class="note">' + esc(it.lineNotes) + '</div>' : '') +
-        '</td><td class="r">' + esc(it.quantity) +
+        '</td><td class="r">' + esc(it.quantityLabel || it.quantity) +
         '</td><td class="r">' + money(it.unitPrice) +
         (showGst ? '</td><td class="r">' + (it.gstApplicable ? money(it.gst) : '—') : '') +
         '</td><td class="r">' + money(it.lineGross) + '</td></tr>';
@@ -195,7 +218,7 @@
     if (inv.companyBSB) payLines.push('BSB: ' + esc(fmtBsb(inv.companyBSB)));
     if (inv.companyAccountNumber) payLines.push('Account: ' + esc(fmtAccount(inv.companyAccountNumber)));
     if (inv.companyPayId) payLines.push('PayID: ' + esc(inv.companyPayId));
-    var bank = (!cancelled && payLines.length)
+    var bank = (!isQuote && !cancelled && payLines.length)
       ? '<div class="box"><div class="lbl">Payment details</div>' +
         payLines.join('<br>') + '</div>'
       : '';
@@ -204,7 +227,8 @@
     var html =
       '<div class="card">' +
         '<div class="top"><div>' +
-          '<h1>TAX INVOICE</h1><p class="num">' + esc(inv.number) + '</p>' +
+          '<h1>' + (isQuote ? 'QUOTE' : 'TAX INVOICE') + '</h1>' +
+          '<p class="num">' + esc(inv.number) + '</p>' +
         '</div><span class="badge ' + badge[0] + '">' + badge[1] + '</span></div>' +
         '<div class="grid">' +
           '<div><div class="lbl">From</div><div class="who">' +
@@ -218,7 +242,10 @@
             (inv.customerABN ? '\nABN ' + esc(inv.customerABN) : '') +
             (inv.customerAddress ? '\n' + esc(inv.customerAddress) : '') + '</div></div>' +
           '<div><div class="lbl">Dates</div>' +
-            'Issued: ' + esc(date(inv.issueDate)) + '<br>Due: ' + esc(date(inv.dueDate)) + '</div>' +
+            'Issued: ' + esc(date(inv.issueDate)) +
+            (isQuote
+              ? '<br>Valid until: ' + esc(date(inv.validUntil))
+              : '<br>Due: ' + esc(date(inv.dueDate))) + '</div>' +
         '</div>' +
         (inv.serviceTitle ? '<div class="box"><strong>' + esc(inv.serviceTitle) + '</strong>' +
           (inv.serviceSubtitle ? '<div class="note">' + esc(inv.serviceSubtitle) + '</div>' : '') + '</div>' : '') +
@@ -230,21 +257,125 @@
           (Number(inv.totalDiscount) > 0 ? '<div><span>Discount</span><span>−' + money(inv.totalDiscount) + '</span></div>' : '') +
           (showGst ? '<div><span>GST</span><span>' + money(inv.gst) + '</span></div>' : '') +
           '<div class="big"><span>Total</span><span>' + money(inv.total) + '</span></div>' +
-          (depositDue ? '<div><span>Deposit due' + depPct + '</span><span>' + money(depAmt) + '</span></div>' : '') +
-          (Number(inv.amountPaid) > 0 ? '<div class="paid"><span>' + (paidIsDeposit ? 'Deposit paid' + depPct : 'Paid') + '</span><span>−' + money(inv.amountPaid) + '</span></div>' : '') +
-          (!paid && !cancelled && Number(inv.balanceDue) > 0 ? '<div class="due"><span>Balance due</span><span>' + money(inv.balanceDue) + '</span></div>' : '') +
+          (isQuote && depAmt > 0 ? '<div><span>Deposit on acceptance' + depPct + '</span><span>' + money(depAmt) + '</span></div>' : '') +
+          (!isQuote && depositDue ? '<div><span>Deposit due' + depPct + '</span><span>' + money(depAmt) + '</span></div>' : '') +
+          (!isQuote && Number(inv.amountPaid) > 0 ? '<div class="paid"><span>' + (paidIsDeposit ? 'Deposit paid' + depPct : 'Paid') + '</span><span>−' + money(inv.amountPaid) + '</span></div>' : '') +
+          (!isQuote && !paid && !cancelled && Number(inv.balanceDue) > 0 ? '<div class="due"><span>Balance due</span><span>' + money(inv.balanceDue) + '</span></div>' : '') +
         '</div>' +
         bank +
         (inv.notes ? '<div class="box"><div class="lbl">Notes</div>' + esc(inv.notes) + '</div>' : '') +
         (inv.terms ? '<div class="box"><div class="lbl">Terms &amp; conditions</div>' + esc(inv.terms) + '</div>' : '') +
         '<div id="printbar" style="text-align:center">' +
           '<button class="btn" onclick="window.print()">Download / Print PDF</button></div>' +
+        // Filled in by mountAccept(): it needs real DOM nodes (an input and a
+        // button with a handler), not an interpolated string.
+        '<div id="acceptzone"></div>' +
       '</div>';
 
     docEl.insertAdjacentHTML('afterbegin', html);
     stateEl.style.display = 'none';
     docEl.style.display = 'block';
-    document.title = esc(inv.number) + ' · ' + esc(inv.companyName || 'Invoice');
+    document.title = esc(inv.number) + ' · ' +
+        esc(inv.companyName || (isQuote ? 'Quote' : 'Invoice'));
+  }
+
+  // ── Quote acceptance ───────────────────────────────────────────────────
+  // The reason a quote link beats a quote PDF: the client can say yes from
+  // the page, and the tradesperson sees it in the app without an email
+  // arriving and being read.
+  //
+  // Security rules allow this write ONCE, on a quote share, and only for
+  // acceptedAt + acceptedName — so a link holder can neither un-accept a
+  // quote nor rewrite the name afterwards.
+  function mountAccept(quote, alreadyAcceptedAt, alreadyAcceptedName) {
+    var zone = document.getElementById('acceptzone');
+    if (!zone) return;
+
+    if (alreadyAcceptedAt) {
+      showAccepted(zone, alreadyAcceptedAt, alreadyAcceptedName);
+      return;
+    }
+    // Converted, declined or expired: the decision is made elsewhere and the
+    // page must not invite a second one.
+    if (quote.acceptable === false) return;
+
+    var box = document.createElement('div');
+    box.className = 'accept';
+
+    var h = document.createElement('h2');
+    h.textContent = 'Accept this quote';
+    var p = document.createElement('p');
+    p.textContent = 'Type your name to accept it. The business is notified in '
+      + 'their app, and this page will show the acceptance.';
+
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.maxLength = 80;
+    input.placeholder = 'Your full name';
+    input.setAttribute('aria-label', 'Your full name');
+
+    var btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.textContent = 'Accept quote';
+
+    var err = document.createElement('div');
+    err.className = 'err';
+    err.style.display = 'none';
+
+    btn.onclick = function () {
+      var name = (input.value || '').trim();
+      if (name.length < 2) {
+        err.textContent = 'Please type your name first.';
+        err.style.display = 'block';
+        input.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Accepting…';
+      err.style.display = 'none';
+      var now = new Date().toISOString();
+      var mask = 'updateMask.fieldPaths=acceptedAt&updateMask.fieldPaths=acceptedName';
+      fetch('https://firestore.googleapis.com/v1/projects/' + PROJECT +
+            '/databases/(default)/documents/shared_invoices/' +
+            encodeURIComponent(token) + '?' + mask + '&key=' + API_KEY, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields: {
+          acceptedAt: { timestampValue: now },
+          acceptedName: { stringValue: name }
+        } })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('rejected');
+        showAccepted(zone, now, name);
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Accept quote';
+        err.textContent = 'Could not record your acceptance. Check your '
+          + 'connection and try again, or reply to the sender directly.';
+        err.style.display = 'block';
+      });
+    };
+
+    box.appendChild(h);
+    box.appendChild(p);
+    box.appendChild(input);
+    box.appendChild(document.createElement('br'));
+    box.appendChild(btn);
+    box.appendChild(err);
+    zone.innerHTML = '';
+    zone.appendChild(box);
+  }
+
+  function showAccepted(zone, whenIso, who) {
+    var d = date(whenIso);
+    var box = document.createElement('div');
+    box.className = 'accepted';
+    box.textContent = 'Quote accepted';
+    var sub = document.createElement('span');
+    sub.textContent = (who ? 'By ' + who : 'Accepted') + (d ? ' on ' + d : '');
+    box.appendChild(sub);
+    zone.innerHTML = '';
+    zone.appendChild(box);
   }
 
   // ── View tracking (the only write the page makes; rules restrict it to
@@ -281,13 +412,19 @@
     return r.json();
   }).then(function (raw) {
     var data = decFields(raw.fields || {});
-    if (data.revokedAt || !data.invoice) throw new Error('gone');
-    render(data.invoice);
+    var isQuote = data.docType === 'quote';
+    var document_ = isQuote ? data.quote : data.invoice;
+    if (data.revokedAt || !document_) throw new Error('gone');
+    render(document_, isQuote);
+    if (isQuote) {
+      mountAccept(document_, data.acceptedAt, data.acceptedName);
+    }
     recordView(raw);
   }).catch(function (e) {
+    var noun = 'document';
     stateEl.textContent = (e && e.message === 'gone')
-      ? 'This invoice is no longer available. Please contact the sender.'
-      : 'Could not load the invoice. Check your connection and try again.';
+      ? 'This ' + noun + ' is no longer available. Please contact the sender.'
+      : 'Could not load the ' + noun + '. Check your connection and try again.';
   });
 })();
 </script>
