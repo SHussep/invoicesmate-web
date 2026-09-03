@@ -265,11 +265,14 @@
         bank +
         (inv.notes ? '<div class="box"><div class="lbl">Notes</div>' + esc(inv.notes) + '</div>' : '') +
         (inv.terms ? '<div class="box"><div class="lbl">Terms &amp; conditions</div>' + esc(inv.terms) + '</div>' : '') +
+        // Accepting comes AFTER the work and the terms — the client should
+        // have read what they are agreeing to — but BEFORE the print button,
+        // which is the secondary action. Filled in by mountAccept(): it needs
+        // real DOM nodes (an input and a button with a handler), not an
+        // interpolated string.
+        '<div id="acceptzone"></div>' +
         '<div id="printbar" style="text-align:center">' +
           '<button class="btn" onclick="window.print()">Download / Print PDF</button></div>' +
-        // Filled in by mountAccept(): it needs real DOM nodes (an input and a
-        // button with a handler), not an interpolated string.
-        '<div id="acceptzone"></div>' +
       '</div>';
 
     docEl.insertAdjacentHTML('afterbegin', html);
