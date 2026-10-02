@@ -1,1 +1,7 @@
 .DS_Store
+node_modules/
+dist-cloudflare/
+.wrangler/
+migration-backup.local/
+.dev.vars*
+.env*
