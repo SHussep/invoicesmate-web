@@ -7,6 +7,10 @@ const origin = new URL(base).origin;
 const paths = new Map([
   ['/', 'index.html'], ['/index.html', 'index.html'],
   ['/privacy.html', 'privacy.html'], ['/terms.html', 'terms.html'],
+  ['/guide.html', 'guide.html'], ['/js/theme.js', 'js/theme.js'],
+  ['/images/invoice-mate-social.jpg', 'images/invoice-mate-social.jpg'],
+  ['/screens/dashboard.webp', 'screens/dashboard.webp'],
+  ['/screens/dashboard-660.webp', 'screens/dashboard-660.webp'],
   ['/support.html', 'support.html'], ['/i/', 'i/index.html'],
   ['/i', 'i/index.html'], ['/i/index.html', 'i/index.html'],
   ['/css/style.css', 'css/style.css'], ['/js/main.js', 'js/main.js'],

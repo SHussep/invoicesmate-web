@@ -1,231 +1,770 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invoice Mate — Invoicing for iPhone, built for Australian businesses</title>
-  <meta name="description" content="Invoice Mate is the invoicing app for Australian sole traders. Create professional invoices and quotes, track expenses, and stay on top of GST — right from your iPhone.">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="canonical" href="https://syainvoices.com/">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://syainvoices.com/">
-  <meta property="og:title" content="Invoice Mate — Invoicing for iPhone">
-  <meta property="og:description" content="Professional invoices, quotes, expenses and GST — built for Australian sole traders. On iPhone now, Android soon.">
-  <meta property="og:image" content="https://syainvoices.com/images/InvoicesMateLogo.png">
-  <meta name="twitter:card" content="summary">
-
-  <link rel="icon" type="image/png" href="images/InvoicesMateLogo32.png">
-  <link rel="apple-touch-icon" href="images/InvoicesMateLogo.png">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-
-  <!-- Nav -->
-  <nav class="nav" id="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">
-        <img src="images/InvoicesMateLogoTransparent.png" alt="Invoice Mate logo">
-        Invoice Mate
-      </a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu">&#9776;</button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#screens">Screens</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#australia">Australia</a></li>
-        <li><a href="support.html">Support</a></li>
-        <li><a href="#get" class="nav-get">Get the app</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <header class="hero" id="get">
-    <div class="wrap">
-      <p class="eyebrow">Invoice Mate for iPhone</p>
-      <h1>The money side of your business, sorted.</h1>
-      <p class="lede">Professional invoices and quotes, expense tracking and GST — all from your pocket. Built for Australian sole traders.</p>
-      <div class="hero-cta">
-        <a href="#" class="appstore-badge" aria-label="Download on the App Store">
-          <svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-          <span class="t"><small>Download on the</small><strong>App Store</strong></span>
-        </a>
-        <span class="platforms">On iPhone now &middot; Android coming soon</span>
-      </div>
-    </div>
-    <div class="hero-device">
-      <div class="phone">
-        <div class="phone-screen">
-          <img src="screens/expenses.png" alt="Invoice Mate running on iPhone">
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Invoice Mate | Invoice App for Australian Small Businesses</title>
+    <meta
+      name="description"
+      content="Create invoices and quotes, track expenses and organise GST records with Invoice Mate for iPhone and iPad. See real app screens and learn how it works."
+    />
+    <link rel="canonical" href="https://syainvoices.com/" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f7f9fc" />
+    <meta name="robots" content="max-image-preview:large" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_AU" />
+    <meta property="og:site_name" content="Invoice Mate" />
+    <meta property="og:url" content="https://syainvoices.com/" />
+    <meta
+      property="og:title"
+      content="Invoice Mate | Invoice App for Australian Small Businesses"
+    />
+    <meta
+      property="og:description"
+      content="Create invoices and quotes, track expenses and organise GST records with Invoice Mate for iPhone and iPad. See real app screens and learn how it works."
+    />
+    <meta
+      property="og:image"
+      content="https://syainvoices.com/images/invoice-mate-social.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Invoice Mate: invoicing for Australian small businesses, with real app screens"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Invoice Mate | Invoice App for Australian Small Businesses"
+    />
+    <meta
+      name="twitter:description"
+      content="Create invoices and quotes, track expenses and organise GST records with Invoice Mate for iPhone and iPad. See real app screens and learn how it works."
+    />
+    <meta
+      name="twitter:image"
+      content="https://syainvoices.com/images/invoice-mate-social.jpg"
+    />
+    <meta name="apple-itunes-app" content="app-id=6754184134" />
+    <link rel="icon" href="/images/InvoicesMateLogo32.png" />
+    <link rel="apple-touch-icon" href="/images/InvoicesMateLogo.png" />
+    <script src="/js/theme.js"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://syainvoices.com/#organisation",
+            "name": "Invoice Mate",
+            "url": "https://syainvoices.com/",
+            "logo": "https://syainvoices.com/images/InvoicesMateLogo.png",
+            "email": "support@syainvoices.com"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://syainvoices.com/#website",
+            "name": "Invoice Mate",
+            "url": "https://syainvoices.com/"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://syainvoices.com/#app",
+            "name": "Invoice Mate",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "iOS 18.0 or later, iPadOS 18.0 or later",
+            "url": "https://syainvoices.com/",
+            "downloadUrl": "https://apps.apple.com/au/app/invoice-mate-invoice-maker/id6754184134",
+            "description": "Invoicing, quotes, expense tracking and business reports for Australian sole traders and small businesses.",
+            "inLanguage": ["en", "es", "zh", "hi", "pt"],
+            "screenshot": [
+              "https://syainvoices.com/screens/dashboard.png",
+              "https://syainvoices.com/screens/invoices.png",
+              "https://syainvoices.com/screens/expenses.png"
+            ],
+            "publisher": { "@id": "https://syainvoices.com/#organisation" }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="/" class="nav-brand"
+          ><img
+            src="/images/InvoicesMateLogoTransparent.png"
+            width="32"
+            height="32"
+            alt=""
+          />Invoice Mate</a
+        >
+        <div class="nav-actions">
+          <button
+            class="theme-toggle"
+            aria-label="Switch to dark theme"
+            title="Change colour theme"
+            hidden
+          >
+            <span aria-hidden="true">◐</span></button
+          ><button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Open menu"
+            aria-controls="navLinks"
+            aria-expanded="false"
+            hidden
+          >
+            Menu
+          </button>
         </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Gallery -->
-  <section class="gallery" id="screens">
-    <div class="gallery-head wrap">
-      <h2>See it in action.</h2>
-      <p>Everything your business needs, designed for one hand.</p>
-    </div>
-    <div class="gallery-track">
-      <div class="gallery-item">
-        <div class="phone"><div class="phone-screen">
-          <img src="screens/expenses.png" alt="Expenses screen in Invoice Mate">
-        </div></div>
-        <div class="cap"><h4>Track expenses</h4><p>Categories, GST &amp; receipts</p></div>
-      </div>
-      <div class="gallery-item">
-        <div class="phone"><div class="phone-screen">
-          <img src="screens/export.png" alt="Export financial data for your accountant">
-        </div></div>
-        <div class="cap"><h4>Year-end ready</h4><p>Export for your accountant</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature 1 -->
-  <section class="feature" id="features">
-    <div class="feature-row">
-      <div class="feature-copy">
-        <span class="eyebrow">Invoices &amp; quotes</span>
-        <h2>Send invoices that look like you mean business.</h2>
-        <p>Create and send a polished invoice in seconds, then let Invoice Mate track payment status and overdue dates for you.</p>
-        <ul class="feature-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#15a06a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 5 professionally designed PDF templates</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#15a06a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Quotes with validity periods, converted to invoices in one tap</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#15a06a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Your logo, ABN and bank details on every document</li>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="/#features">Features</a></li>
+          <li><a href="/#screens">App tour</a></li>
+          <li><a href="/guide.html">How it works</a></li>
+          <li><a href="/support.html">Support</a></li>
+          <li>
+            <a
+              class="nav-get"
+              href="https://apps.apple.com/au/app/invoice-mate-invoice-maker/id6754184134"
+              >Get Invoice Mate <span aria-hidden="true">↗</span></a
+            >
+          </li>
         </ul>
       </div>
-      <div class="feature-visual">
-        <div class="paper-stage">
-          <figure class="paper">
-            <img src="screens/invoice.png" alt="A professional invoice from Invoice Mate">
-          </figure>
+    </nav>
+    <main id="main">
+      <header class="hero container">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="status-dot"></span> Built for Australian small business
+          </p>
+          <h1>
+            Less paperwork.<br />More time for<br /><span>your business.</span>
+          </h1>
+          <p class="lede">
+            From your first quote to your next invoice. Keep your expenses,
+            customers and business records together, wherever work takes you.
+          </p>
+          <div class="hero-cta">
+            <a
+              class="appstore-badge"
+              href="https://apps.apple.com/au/app/invoice-mate-invoice-maker/id6754184134"
+              aria-label="Download Invoice Mate on the App Store"
+              ><svg viewBox="0 0 384 512" aria-hidden="true">
+                <path
+                  d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
+                /></svg
+              ><span
+                ><small>Download on the</small><strong>App Store</strong></span
+              ></a
+            ><a class="text-link" href="#screens"
+              >Take a look inside <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <p class="micro">For iPhone &amp; iPad. For the way you work.</p>
+          <div class="hero-tags">
+            <span>Invoices &amp; quotes</span
+            ><span>Expenses &amp; receipts</span><span>Australian GST</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="hero-note">
+            <span class="note-icon" aria-hidden="true">✓</span>
+            <div>
+              <strong>Your work. Your business.</strong
+              ><span>Keep the details together.</span>
+            </div>
+          </div>
+          <div class="phone hero-secondary">
+            <img
+              src="/screens/invoices.webp"
+              srcset="
+                /screens/invoices-660.webp  660w,
+                /screens/invoices.webp     1320w
+              "
+              sizes="(max-width: 640px) 72vw, 330px"
+              width="1320"
+              height="2868"
+              alt="Invoice Mate invoice list with paid and outstanding demo invoices"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+          <div class="phone hero-primary">
+            <img
+              src="/screens/dashboard.webp"
+              srcset="
+                /screens/dashboard-660.webp  660w,
+                /screens/dashboard.webp     1320w
+              "
+              sizes="(max-width: 640px) 72vw, 330px"
+              width="1320"
+              height="2868"
+              alt="Invoice Mate dashboard showing demo income, expenses and outstanding invoices"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+          <div class="visual-caption">
+            <span class="status-dot"></span> Real app. Sample business.
+          </div>
+        </div>
+      </header>
+      <div class="audience-strip">
+        <div class="container">
+          <p>Made for the people<br /><strong>doing the work.</strong></p>
+          <span>Tradies</span><span>Freelancers</span><span>Cleaners</span
+          ><span>Consultants</span><span>Small businesses</span>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Feature 2 -->
-  <section class="feature flip">
-    <div class="feature-row">
-      <div class="feature-copy">
-        <span class="eyebrow">Expenses &amp; reports</span>
-        <h2>Every dollar accounted for, ready for tax time.</h2>
-        <p>Log expenses with categories, GST breakdowns and receipt photos. Then see exactly where you stand with built-in reports.</p>
-        <ul class="feature-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#15a06a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Profit &amp; loss, expense breakdowns and aged receivables</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#15a06a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Attach receipts to every expense</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#15a06a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Export to Excel or PDF for your accountant</li>
+      <section class="section container" id="features">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">A lighter way to run your day</p>
+            <h2>From job done<br />to admin done.</h2>
+          </div>
+          <p>
+            You do the work. Invoice Mate helps with the details that come after
+            — and keeps them easy to find.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card feature-blue">
+            <div class="card-copy">
+              <span class="step">01 / CREATE</span>
+              <h3>Make it yours.<br />Send it with confidence.</h3>
+              <p>
+                Create invoices and quotes with your logo, brand colour and
+                payment details. Preview the PDF before you share it.
+              </p>
+              <a class="text-link" href="/guide.html#invoices"
+                >Create your first invoice <span aria-hidden="true">↗</span></a
+              >
+            </div>
+            <div class="phone">
+              <button
+                class="screen-zoom"
+                data-image="/screens/invoice-preview.png"
+                aria-label="Enlarge: A real invoice PDF preview for fictional Harbour Studio"
+              >
+                <img
+                  src="/screens/invoice-preview.webp"
+                  srcset="
+                    /screens/invoice-preview-660.webp  660w,
+                    /screens/invoice-preview.webp     1320w
+                  "
+                  sizes="(max-width: 640px) 72vw, 330px"
+                  width="1320"
+                  height="2868"
+                  alt="A real invoice PDF preview for fictional Harbour Studio"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            </div>
+          </article>
+          <article class="feature-card feature-peach">
+            <div class="card-copy">
+              <span class="step">02 / KEEP TRACK</span>
+              <h3>Small expenses.<br />A clearer picture.</h3>
+              <p>
+                Save your business expenses, organise categories and attach
+                receipts so the details stay with the record.
+              </p>
+              <a class="text-link" href="/guide.html#expenses"
+                >Keep your expenses organised
+                <span aria-hidden="true">↗</span></a
+              >
+            </div>
+            <div class="phone">
+              <button
+                class="screen-zoom"
+                data-image="/screens/expenses.png"
+                aria-label="Enlarge: Invoice Mate expenses list with fictional business purchases"
+              >
+                <img
+                  src="/screens/expenses.webp"
+                  srcset="
+                    /screens/expenses-660.webp  660w,
+                    /screens/expenses.webp     1320w
+                  "
+                  sizes="(max-width: 640px) 72vw, 330px"
+                  width="1320"
+                  height="2868"
+                  alt="Invoice Mate expenses list with fictional business purchases"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="tour-section" id="screens">
+        <div class="container tour-layout">
+          <div class="tour-copy">
+            <p class="eyebrow">A closer look</p>
+            <h2>Your business.<br />At a glance.</h2>
+            <p class="section-lede">
+              A place for every invoice, every expense and the bigger picture.
+            </p>
+            <div
+              class="tour-tabs"
+              role="tablist"
+              aria-label="Explore Invoice Mate screens"
+            >
+              <button
+                class="tour-tab"
+                id="tab-dashboard"
+                role="tab"
+                aria-controls="panel-dashboard"
+                aria-selected="true"
+                tabindex="0"
+              >
+                <span>01</span
+                ><span
+                  ><strong>The everyday overview</strong
+                  ><small
+                    >See income, expenses and what is still outstanding.</small
+                  ></span
+                ><span aria-hidden="true">↗</span></button
+              ><button
+                class="tour-tab"
+                id="tab-invoices"
+                role="tab"
+                aria-controls="panel-invoices"
+                aria-selected="false"
+                tabindex="-1"
+              >
+                <span>02</span
+                ><span
+                  ><strong>Know what is owed</strong
+                  ><small
+                    >Find invoices, check their status and keep track of
+                    payments.</small
+                  ></span
+                ><span aria-hidden="true">↗</span></button
+              ><button
+                class="tour-tab"
+                id="tab-reports"
+                role="tab"
+                aria-controls="panel-reports"
+                aria-selected="false"
+                tabindex="-1"
+              >
+                <span>03</span
+                ><span
+                  ><strong>Turn records into reports</strong
+                  ><small
+                    >Review income, expenses and GST estimates from your
+                    records.</small
+                  ></span
+                ><span aria-hidden="true">↗</span></button
+              ><button
+                class="tour-tab"
+                id="tab-export"
+                role="tab"
+                aria-controls="panel-export"
+                aria-selected="false"
+                tabindex="-1"
+              >
+                <span>04</span
+                ><span
+                  ><strong>Bring your accountant along</strong
+                  ><small
+                    >Choose a financial year and export the records you
+                    need.</small
+                  ></span
+                ><span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <a class="text-link" href="/guide.html"
+              >Explore the step-by-step guide
+              <span aria-hidden="true">→</span></a
+            >
+          </div>
+          <div class="tour-stage">
+            <div
+              class="tour-panel"
+              role="tabpanel"
+              id="panel-dashboard"
+              aria-labelledby="tab-dashboard"
+              tabindex="0"
+            >
+              <div class="phone">
+                <button
+                  class="screen-zoom"
+                  data-image="/screens/dashboard.png"
+                  aria-label="Enlarge: Invoice Mate dashboard with sample business totals"
+                >
+                  <img
+                    src="/screens/dashboard.webp"
+                    srcset="
+                      /screens/dashboard-660.webp  660w,
+                      /screens/dashboard.webp     1320w
+                    "
+                    sizes="(max-width: 640px) 72vw, 330px"
+                    width="1320"
+                    height="2868"
+                    alt="Invoice Mate dashboard with sample business totals"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
+              </div>
+              <p>The everyday overview · Tap to enlarge</p>
+            </div>
+            <div
+              class="tour-panel"
+              role="tabpanel"
+              id="panel-invoices"
+              aria-labelledby="tab-invoices"
+              tabindex="0"
+              hidden
+            >
+              <div class="phone">
+                <button
+                  class="screen-zoom"
+                  data-image="/screens/invoices.png"
+                  aria-label="Enlarge: Invoice Mate invoices with payment status"
+                >
+                  <img
+                    src="/screens/invoices.webp"
+                    srcset="
+                      /screens/invoices-660.webp  660w,
+                      /screens/invoices.webp     1320w
+                    "
+                    sizes="(max-width: 640px) 72vw, 330px"
+                    width="1320"
+                    height="2868"
+                    alt="Invoice Mate invoices with payment status"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
+              </div>
+              <p>Know what is owed · Tap to enlarge</p>
+            </div>
+            <div
+              class="tour-panel"
+              role="tabpanel"
+              id="panel-reports"
+              aria-labelledby="tab-reports"
+              tabindex="0"
+              hidden
+            >
+              <div class="phone">
+                <button
+                  class="screen-zoom"
+                  data-image="/screens/reports.png"
+                  aria-label="Enlarge: Invoice Mate reports showing demo business figures"
+                >
+                  <img
+                    src="/screens/reports.webp"
+                    srcset="
+                      /screens/reports-660.webp  660w,
+                      /screens/reports.webp     1320w
+                    "
+                    sizes="(max-width: 640px) 72vw, 330px"
+                    width="1320"
+                    height="2868"
+                    alt="Invoice Mate reports showing demo business figures"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
+              </div>
+              <p>Turn records into reports · Tap to enlarge</p>
+            </div>
+            <div
+              class="tour-panel"
+              role="tabpanel"
+              id="panel-export"
+              aria-labelledby="tab-export"
+              tabindex="0"
+              hidden
+            >
+              <div class="phone">
+                <button
+                  class="screen-zoom"
+                  data-image="/screens/export.png"
+                  aria-label="Enlarge: Invoice Mate export options for the financial year"
+                >
+                  <img
+                    src="/screens/export.webp"
+                    srcset="
+                      /screens/export-660.webp  660w,
+                      /screens/export.webp     1320w
+                    "
+                    sizes="(max-width: 640px) 72vw, 330px"
+                    width="1320"
+                    height="2868"
+                    alt="Invoice Mate export options for the financial year"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
+              </div>
+              <p>Bring your accountant along · Tap to enlarge</p>
+            </div>
+          </div>
+        </div>
+        <p class="container capture-note">
+          Screens captured from Invoice Mate in an iPhone simulator. Harbour
+          Studio and all customer details and amounts are fictional
+          demonstration data.
+        </p>
+      </section>
+      <section class="section container australia" id="australia">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">At home in Australia</p>
+            <h2>Local details.<br />Already thought through.</h2>
+          </div>
+          <p>
+            Built around the way Australian sole traders and small businesses
+            keep their records.
+          </p>
+        </div>
+        <div class="local-grid">
+          <article>
+            <span class="local-symbol">ABN</span>
+            <h3>The right details</h3>
+            <p>
+              Keep your business and customer ABNs with your records and add
+              your business details to documents.
+            </p>
+          </article>
+          <article>
+            <span class="local-symbol">GST</span>
+            <h3>Keep tax visible</h3>
+            <p>
+              Track GST on invoices and expenses, then review estimates based on
+              the records you enter.
+            </p>
+          </article>
+          <article>
+            <span class="local-symbol">Jul–Jun</span>
+            <h3>A familiar financial year</h3>
+            <p>
+              Review your business by Australian financial year and export
+              records for your accountant.
+            </p>
+          </article>
+          <article>
+            <span class="local-symbol">PayID</span>
+            <h3>A clear way to pay</h3>
+            <p>
+              Add BSB, account and PayID details to your documents so customers
+              know where to send payment.
+            </p>
+          </article>
+        </div>
+      </section>
+      <section class="container">
+        <div class="language-panel">
+          <div>
+            <p class="eyebrow">Your business. Your language.</p>
+            <h2>Feel at home.<br />Look professional.</h2>
+            <p>
+              Use Invoice Mate in English, Spanish, Chinese, Hindi or
+              Portuguese. Your invoices and quotes are generated in English for
+              your Australian customers.
+            </p>
+            <div class="language-chips">
+              <span>English</span><span lang="es">Español</span
+              ><span lang="zh">中文</span><span lang="hi">हिन्दी</span
+              ><span lang="pt">Português</span>
+            </div>
+          </div>
+          <div class="language-art" aria-hidden="true">
+            <span>Hello.</span><span>Hola.</span><span>你好.</span
+            ><span>Olá.</span>
+          </div>
+        </div>
+      </section>
+      <section class="section container theme-section">
+        <div class="theme-visual">
+          <div class="phone">
+            <button
+              class="screen-zoom"
+              data-image="/screens/dashboard-dark.png"
+              aria-label="Enlarge: Invoice Mate dashboard in dark mode with readable light text"
+            >
+              <img
+                src="/screens/dashboard-dark.webp"
+                srcset="
+                  /screens/dashboard-dark-660.webp  660w,
+                  /screens/dashboard-dark.webp     1320w
+                "
+                sizes="(max-width: 640px) 72vw, 330px"
+                width="1320"
+                height="2868"
+                alt="Invoice Mate dashboard in dark mode with readable light text"
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          </div>
+        </div>
+        <div class="theme-copy">
+          <p class="eyebrow">Comfortable, day or night</p>
+          <h2>A little easier<br />on the eyes.</h2>
+          <p class="section-lede">
+            Light and dark themes that put your business first. Clear numbers,
+            familiar controls and room to focus.
+          </p>
+          <ul class="check-list">
+            <li>Light and dark appearance</li>
+            <li>Keep working with locally available records offline</li>
+            <li>Sync your changes when you reconnect</li>
+          </ul>
+          <p class="micro">
+            Internet is needed for sign-in, cloud sync and online services.
+          </p>
+        </div>
+      </section>
+      <section class="section container faq-section" id="faq">
+        <div>
+          <p class="eyebrow">Good to know</p>
+          <h2>A few things<br />you might be wondering.</h2>
+          <a class="text-link" href="/support.html"
+            >Visit support <span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>
+              Who is Invoice Mate for?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Invoice Mate is designed for Australian sole traders, freelancers,
+              tradies and small businesses that want invoices, quotes, customers
+              and expenses in one place.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Can I use my own branding?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Yes. Add your logo and business details, choose a document
+              template and customise its accent colour. Preview the PDF before
+              sharing.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Can I turn a quote into an invoice?<span aria-hidden="true"
+                >+</span
+              >
+            </summary>
+            <p>
+              Yes. Convert a quote into an invoice and carry across the customer
+              and line items. Review dates, amounts and payment details before
+              sharing.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Can I use the app in Spanish?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Yes. The interface supports English, Spanish, Chinese, Hindi and
+              Portuguese. Invoice and quote PDFs are generated in English.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Can I export records for my accountant?<span aria-hidden="true"
+                >+</span
+              >
+            </summary>
+            <p>
+              Yes. Choose the financial year and export supported records and
+              reports as PDF or Excel files. The guide shows where to find the
+              export controls.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Does Invoice Mate lodge my BAS?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              No. GST and tax figures are estimates based on your records.
+              Invoice Mate does not lodge your BAS or replace advice from a
+              registered tax or BAS agent.
+            </p>
+          </details>
+        </div>
+      </section>
+      <section class="container final-section">
+        <div class="final-panel">
+          <img
+            src="/images/InvoicesMateLogoTransparent.png"
+            width="72"
+            height="72"
+            alt=""
+          />
+          <p class="eyebrow">A fresh start for your business admin</p>
+          <h2>Your next invoice.<br />Your next step.</h2>
+          <p>Bring the details together with Invoice Mate.</p>
+          <a
+            class="appstore-badge"
+            href="https://apps.apple.com/au/app/invoice-mate-invoice-maker/id6754184134"
+            aria-label="Download Invoice Mate on the App Store"
+            ><svg viewBox="0 0 384 512" aria-hidden="true">
+              <path
+                d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
+              /></svg
+            ><span
+              ><small>Download on the</small><strong>App Store</strong></span
+            ></a
+          ><a class="final-guide" href="/guide.html">See how it works →</a>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="container footer-top">
+        <a href="/" class="nav-brand"
+          ><img
+            src="/images/InvoicesMateLogoTransparent.png"
+            width="32"
+            height="32"
+            alt=""
+          />Invoice Mate</a
+        >
+        <p>A little less admin.<br />A little more life.</p>
+        <ul class="footer-links">
+          <li><a href="/guide.html">How it works</a></li>
+          <li><a href="/support.html">Support</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+          <li><a href="mailto:support@syainvoices.com">Contact</a></li>
         </ul>
       </div>
-      <div class="feature-visual">
-        <div class="phone"><div class="phone-screen">
-          <img src="screens/export.png" alt="Export your fiscal-year data in Invoice Mate">
-        </div></div>
+      <div class="container footer-bottom">
+        <span>© 2026 Invoice Mate · Made for Australia</span
+        ><span>iPhone &amp; iPad · iOS 18 or later</span>
       </div>
-    </div>
-  </section>
-
-  <!-- Australia -->
-  <section class="aus" id="australia">
-    <div class="wrap">
-      <p class="eyebrow">Made for Australia</p>
-      <h2>Tax compliance, built right in.</h2>
-      <p class="aus-lede">GST, ABN and the Australian financial year are handled for you — no spreadsheets, no guesswork.</p>
-      <div class="aus-grid">
-        <div class="aus-card">
-          <div class="k">10%</div>
-          <h4>GST done for you</h4>
-          <p>Automatic GST on invoices, quotes and expenses, tracked for your BAS.</p>
-        </div>
-        <div class="aus-card">
-          <div class="k">ABN</div>
-          <h4>ABN support</h4>
-          <p>Store your ABN and your clients', shown on invoices as the ATO requires.</p>
-        </div>
-        <div class="aus-card">
-          <div class="k">Jul&ndash;Jun</div>
-          <h4>Financial year</h4>
-          <p>Reports follow the Australian FY. Filter everything instantly.</p>
-        </div>
-        <div class="aus-card">
-          <div class="k">$75k</div>
-          <h4>Threshold alerts</h4>
-          <p>Get a heads-up as your turnover nears the GST registration threshold.</p>
-        </div>
-      </div>
-      <p class="aus-note">Invoice Mate keeps your books tidy — it doesn't replace your accountant. We're not a tax agent and don't give tax advice; always confirm tax matters with a registered professional.</p>
-    </div>
-  </section>
-
-  <!-- Security -->
-  <section class="security">
-    <div class="wrap">
-      <h2>Your data stays yours.</h2>
-      <p>Bank-grade security on Google Firebase. Encrypted, isolated, and synced so it's always with you.</p>
-      <div class="sec-grid">
-        <div class="sec-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <h4>Encrypted</h4>
-          <p>Data encrypted in transit and at rest.</p>
-        </div>
-        <div class="sec-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <h4>Isolated</h4>
-          <p>Only you can access your records.</p>
-        </div>
-        <div class="sec-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-          <h4>Cloud backup</h4>
-          <p>Synced safely across your devices.</p>
-        </div>
-        <div class="sec-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-          <h4>Offline first</h4>
-          <p>Works anywhere; syncs when you're back.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Final CTA -->
-  <section class="final">
-    <div class="wrap">
-      <h2>Run your business from your iPhone.</h2>
-      <p>Download Invoice Mate and send your first invoice today.</p>
-      <div class="hero-cta">
-        <a href="#" class="appstore-badge" aria-label="Download on the App Store">
-          <svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-          <span class="t"><small>Download on the</small><strong>App Store</strong></span>
-        </a>
-        <span class="platforms">On iPhone now &middot; Android coming soon</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="wrap-wide footer-inner">
-      <div class="footer-brand">
-        <img src="images/InvoicesMateLogoTransparent.png" alt="">
-        Invoice Mate
-      </div>
-      <ul class="footer-links">
-        <li><a href="#features">Features</a></li>
-        <li><a href="support.html">Support</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="terms.html">Terms</a></li>
-        <li><a href="mailto:support@syainvoices.com">Contact</a></li>
-      </ul>
-      <div>&copy; 2026 Invoice Mate &middot; Made in Australia</div>
-    </div>
-    <div class="wrap-wide footer-note">
-      Invoice Mate is a record-keeping and management tool — not an accountant or registered tax agent — and does not provide tax, financial or legal advice. It helps you keep your invoices, expenses and accounts in order. Always confirm tax matters with a qualified professional.
-    </div>
-  </footer>
-
-  <script src="js/main.js"></script>
-</body>
+      <p class="container footer-note">
+        Invoice Mate helps you organise your business records. It is not a
+        registered tax or BAS agent and does not provide tax, financial or legal
+        advice. Review tax matters with a qualified professional.
+      </p>
+    </footer>
+    <dialog class="lightbox" aria-label="Enlarged app screenshot">
+      <button class="lightbox-close" aria-label="Close screenshot">
+        Close <span aria-hidden="true">×</span></button
+      ><img alt="" />
+    </dialog>
+    <script src="/js/main.js" defer></script>
+  </body>
 </html>
