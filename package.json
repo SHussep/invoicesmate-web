@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare:cloudflare": "node scripts/package-cloudflare.mjs",
+    "dev:cloudflare": "npm run prepare:cloudflare && wrangler dev",
+    "deploy:cloudflare": "npm run prepare:cloudflare && wrangler deploy",
+    "verify:cloudflare": "node scripts/verify-cloudflare.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261002.1",
+    "wrangler": "^4.146.0"
+  }
+}
