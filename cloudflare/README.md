@@ -37,6 +37,9 @@ are still required before proposing the cutover.
 
 ## Deployment
 
+The complete source DNS backup and comparison have now been completed privately.
+The production cutover remains pending explicit owner approval.
+
 ```sh
 npm ci
 npm run prepare:cloudflare
