@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Invoice Mate — social card source</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #edf3fd;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #142338;
+      }
+      .canvas {
+        width: 1200px;
+        height: 630px;
+        position: relative;
+        overflow: hidden;
+        padding: 62px;
+        background:
+          radial-gradient(ellipse at 90% 50%, #d8e6ff, transparent 65%), #f5f8ff;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 23px;
+        font-weight: 650;
+        letter-spacing: -1px;
+      }
+      .brand img {
+        width: 44px;
+        height: 44px;
+      }
+      .eyebrow {
+        color: #175de5;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 650;
+        font-size: 12px;
+        margin-top: 57px;
+      }
+      h1 {
+        font-size: 61px;
+        line-height: 1.04;
+        letter-spacing: -3px;
+        font-weight: 650;
+        margin: 18px 0 24px;
+      }
+      h1 span {
+        color: #175de5;
+      }
+      p {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #53647a;
+        max-width: 430px;
+        margin: 0;
+      }
+      .url {
+        position: absolute;
+        bottom: 49px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #175de5;
+      }
+      .phone {
+        position: absolute;
+        background: #172332;
+        border: 7px solid #172332;
+        box-shadow:
+          0 0 0 1px #738198,
+          0 22px 34px #17315730;
+        border-radius: 37px;
+        overflow: hidden;
+        width: 260px;
+      }
+      .phone img {
+        display: block;
+        width: 100%;
+        border-radius: 28px;
+      }
+      .first {
+        left: 666px;
+        top: 106px;
+        transform: rotate(-9deg);
+        width: 245px;
+      }
+      .second {
+        left: 858px;
+        top: 56px;
+        transform: rotate(6deg);
+      }
+      .note {
+        position: absolute;
+        right: 130px;
+        top: 25px;
+        color: #61738b;
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+      .phone::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        width: 29%;
+        height: 3.2%;
+        top: 1.1%;
+        left: 35.5%;
+        background: #080d14;
+        border-radius: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="canvas">
+      <div class="brand">
+        <img src="/images/InvoicesMateLogoTransparent.png" alt="" />Invoice Mate
+      </div>
+      <div class="eyebrow">Made for Australian small business</div>
+      <h1>
+        Less paperwork.<br />More time for<br /><span>your business.</span>
+      </h1>
+      <p>
+        Invoices, quotes and expenses.<br />Together, wherever work takes you.
+      </p>
+      <div class="url">syainvoices.com <span aria-hidden="true">↗</span></div>
+      <div class="phone first">
+        <img src="/screens/invoices.png" alt="Real Invoice Mate invoice list" />
+      </div>
+      <div class="phone second">
+        <img src="/screens/dashboard.png" alt="Real Invoice Mate dashboard" />
+      </div>
+      <div class="note">REAL APP SCREENS · DEMO DATA</div>
+    </main>
+  </body>
+</html>
